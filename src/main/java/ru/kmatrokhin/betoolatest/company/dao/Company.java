@@ -7,6 +7,7 @@ import lombok.experimental.Accessors;
 import ru.kmatrokhin.betoolatest.cultivation.dao.Cultivation;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,4 +42,7 @@ public class Company {
 
   @Column(name = "postal_code")
   private String postalCode;
+
+  @Column(name = "deleted_date")
+  private LocalDateTime deletedDate;
 }

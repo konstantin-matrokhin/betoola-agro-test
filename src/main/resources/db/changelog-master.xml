@@ -8,5 +8,6 @@
 
     <include file="migrations/1.0.0-create-company.sql" relativeToChangelogFile="true"/>
     <include file="migrations/1.0.1-create-cultivation.sql" relativeToChangelogFile="true"/>
+    <include file="migrations/1.0.2-add-company-deleted_date.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
