@@ -1,0 +1,407 @@
+openapi: "3.0.3"
+info:
+  version: 0.0.1
+  title: Agro API
+  description: API modelling the structure of an agricultural company
+
+paths:
+  /companies/:
+    get:
+      operationId: companies_list
+      summary: Fetches the list of the companies available on the platform, allows to search by name
+      parameters:
+        - in: header
+          name: X_CORRELATION_ID
+          schema:
+            type: string
+          description: Correlation ID for debugging purposes
+        - in: query
+          name: name
+          schema:
+            type: string
+          description: Parameter allowing to search for a company by name
+      tags:
+        - companies
+      responses:
+        '200':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyList'
+          description: A list of companies found on the platform
+        '500':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Details of the error occured during company research
+    post:
+      operationId: companies_create
+      summary: Creates a new company of the platform
+      parameters:
+        - in: header
+          name: X_CORRELATION_ID
+          schema:
+            type: string
+          description: Correlation ID for debugging purposes
+      tags:
+        - companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Company'
+        required: true
+      responses:
+        '200':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+          description: ''
+        '500':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Details of the error occured during company research
+  '/companies/{id}/':
+    get:
+      operationId: companies_retrieve
+      summary: Retrieves the details of a company identified by the ID
+      parameters:
+        - in: header
+          name: X_CORRELATION_ID
+          schema:
+            type: string
+          description: Correlation ID for debugging purposes
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: A UUID string identifying this Company.
+          required: true
+      tags:
+        - companies
+      responses:
+        '200':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+          description: The company identified by the provided ID
+        '500':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Details of the error occured during company fetch
+    put:
+      operationId: companies_update
+      summary: Updates the company identified by the ID
+      parameters:
+        - in: header
+          name: X_CORRELATION_ID
+          schema:
+            type: string
+          description: Correlation ID for debugging purposes
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: A UUID string identifying this Company.
+          required: true
+      tags:
+        - companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Company'
+        required: true
+      responses:
+        '200':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+          description: Updated company
+        '500':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Details of the error occured during company update
+    delete:
+      operationId: companies_destroy
+      summary: Removes the company identified by the provided ID
+      parameters:
+        - in: header
+          name: X_CORRELATION_ID
+          schema:
+            type: string
+          description: Correlation ID for debugging purposes
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: A UUID string identifying this Company.
+          required: true
+      tags:
+        - companies
+      responses:
+        '200':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+          description: Deleted company
+        '500':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Details of the error occured during company deletion
+  /companies/{companyId}/cultivations/:
+    get:
+      operationId: companies_cultivations_list
+      summary: Fetches all the cultivations that a company have, allows to search by name
+      parameters:
+        - in: header
+          name: X_CORRELATION_ID
+          schema:
+            type: string
+          description: Correlation ID for debugging purposes
+        - in: path
+          name: companyId
+          schema:
+            type: string
+          required: true
+        - name: name
+          required: false
+          in: query
+          description: Parameter allowing to search for cultivation by name
+          schema:
+            type: string
+      tags:
+        - cultivations
+      responses:
+        '200':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CultivationList'
+          description: ''
+        '500':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Details of the error occured during cultivation research
+    post:
+      operationId: companies_organization_units_fields_cultivations_create
+      summary: Creates a new cultivation for the company
+      parameters:
+        - in: header
+          name: X_CORRELATION_ID
+          schema:
+            type: string
+          description: Correlation ID for debugging purposes
+        - in: path
+          name: companyId
+          schema:
+            type: string
+          required: true
+      tags:
+        - cultivations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cultivation'
+        required: true
+      responses:
+        '200':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cultivation'
+          description: ''
+        '500':
+          headers:
+            X_CORRELATION_ID:
+              schema:
+                type: string
+              description: Correlation ID for debugging purposes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          description: Details of the error occured during cultivation creation
+components:
+  schemas:
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Company name
+          maxLength: 63
+        address:
+          type: string
+          nullable: true
+          maxLength: 255
+        postal_code:
+          type: string
+          maxLength: 255
+        city:
+          type: string
+          nullable: true
+          maxLength: 255
+        country:
+          type: string
+          maxLength: 2
+          description: ISO country code
+        fiscal_id:
+          type: string
+          maxLength: 10
+      required:
+        - country
+        - id
+        - postal_code
+    CompanyList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Company'
+    GeometryField:
+      type: object
+      description: A field to handle GeoJSON Geometry fields, with format such as [[long, lat], [long, lat]]
+      properties:
+        type:
+          type: string
+        coordinates:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: float
+    Cultivation:
+      type: object
+      properties:
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: Cultivation Name
+        accounting_year:
+          type: integer
+          maximum: 32767
+          description: Fiscal year, used for reporting
+          minimum: 0
+        cultivated_variety:
+          type: string
+          description: Cultivated variety
+        polygon:
+          $ref: '#/components/schemas/GeometryField'
+      required:
+        - created
+        - cultivated_variety
+        - id
+        - modified
+        - name
+    CultivationList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Cultivation'
+    ApiError:
+      description: Generic template for an API error.
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Error code defined by the component that throws an error.
+          type: string
+        message:
+          description: Developer-friendly error description.
+          type: string
