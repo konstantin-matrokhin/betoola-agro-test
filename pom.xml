@@ -121,6 +121,12 @@
             <artifactId>liquibase-core</artifactId>
             <version>4.3.5</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.vladmihalcea/hibernate-types-52 -->
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-52</artifactId>
+            <version>2.11.1</version>
+        </dependency>
     </dependencies>
 
     <build>
