@@ -3,7 +3,9 @@ package ru.kmatrokhin.betoolatest.cultivation.dao;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import ru.kmatrokhin.betoolatest.company.dao.Company;
 
 import javax.persistence.*;
@@ -16,6 +18,8 @@ import java.util.UUID;
 @Entity
 @Table(name = "cultivation")
 @DynamicInsert
+@DynamicUpdate
+@Accessors(chain = true)
 public class Cultivation {
   @Id
   @GeneratedValue
@@ -28,7 +32,7 @@ public class Cultivation {
   private Integer accountingYear;
 
   @Column(name = "cultivated_variety")
-  private String cultivated_variety;
+  private String cultivatedVariety;
 
   @ManyToOne
   @JoinColumn(name = "company_id")
