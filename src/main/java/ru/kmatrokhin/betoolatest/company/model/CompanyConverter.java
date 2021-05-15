@@ -9,13 +9,7 @@ import ru.kmatrokhin.betoolatest.openapi.model.CompanyDTO;
 public class CompanyConverter {
 
   public Company createCompanyFromDTO(CompanyDTO companyDTO) {
-    return new Company()
-        .setCity(companyDTO.getCity().orElse(null))
-        .setAddress(companyDTO.getAddress().orElse(null))
-        .setCountry(companyDTO.getCountry())
-        .setName(companyDTO.getName())
-        .setFiscalId(companyDTO.getFiscalId())
-        .setPostalCode(companyDTO.getPostalCode());
+    return updateCompanyFieldsFromDTO(new Company(), companyDTO);
   }
 
   public CompanyDTO createDTOFromCompany(Company company) {
@@ -28,6 +22,16 @@ public class CompanyConverter {
     dto.setPostalCode(company.getPostalCode());
     dto.setId(company.getId());
     return dto;
+  }
+
+  public Company updateCompanyFieldsFromDTO(Company company, CompanyDTO companyDTO) {
+    return company
+        .setCity(companyDTO.getCity().orElse(null))
+        .setAddress(companyDTO.getAddress().orElse(null))
+        .setCountry(companyDTO.getCountry())
+        .setName(companyDTO.getName())
+        .setFiscalId(companyDTO.getFiscalId())
+        .setPostalCode(companyDTO.getPostalCode());
   }
 
 }
