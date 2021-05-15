@@ -3,6 +3,7 @@ package ru.kmatrokhin.betoolatest.company.dao;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import ru.kmatrokhin.betoolatest.cultivation.dao.Cultivation;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.UUID;
 @Setter
 @Table(name = "company")
 @EqualsAndHashCode(of = "id")
+@Accessors(chain = true)
 public class Company {
   @Id
   @GeneratedValue

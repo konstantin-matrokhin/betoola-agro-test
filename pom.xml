@@ -155,7 +155,7 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>5.1.0</version>
+                <version>5.1.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -166,9 +166,20 @@
                             <generatorName>spring</generatorName>
                             <apiPackage>ru.kmatrokhin.betoolatest.openapi.api</apiPackage>
                             <modelPackage>ru.kmatrokhin.betoolatest.openapi.model</modelPackage>
+                            <modelNameSuffix>DTO</modelNameSuffix>
                             <addCompileSourceRoot>true</addCompileSourceRoot>
+                            <openApiNullable>false</openApiNullable>
+                            <generateModels>true</generateModels>
+                            <generateApis>true</generateApis>
+                            <generateApiDocumentation>true</generateApiDocumentation>
+                            <generateSupportingFiles>true</generateSupportingFiles>
+
                             <configOptions>
+                                <useBeanValidation>true</useBeanValidation>
+                                <useOptional>true</useOptional>
+                                <useTags>true</useTags>
                                 <sourceFolder>src/gen/java/main</sourceFolder>
+                                <dateLibrary>java8-localdatetime</dateLibrary>
                                 <delegatePattern>true</delegatePattern>
                             </configOptions>
                         </configuration>
