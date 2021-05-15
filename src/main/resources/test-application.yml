@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:agro
+    driver-class-name: org.h2.Driver
+    data-username: test
+    data-password: test
+  liquibase:
+    enabled: false
