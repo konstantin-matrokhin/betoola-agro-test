@@ -15,8 +15,7 @@ public class CompanyConverter {
         .setCountry(companyDTO.getCountry())
         .setName(companyDTO.getName())
         .setFiscalId(companyDTO.getFiscalId())
-        .setPostalCode(companyDTO.getPostalCode())
-        .setId(companyDTO.getId()); //TODO exclude id
+        .setPostalCode(companyDTO.getPostalCode());
   }
 
   public CompanyDTO createDTOFromCompany(Company company) {
