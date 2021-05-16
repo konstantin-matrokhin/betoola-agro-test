@@ -112,7 +112,7 @@ class CompanyServiceImplTest extends SpringTestBase {
 
     final var listResponseEntity = companiesApi.companiesList(Optional.empty(), Optional.empty());
     verify(companyRepository, times(1)).findByDeletedDateNull();
-    verify(companyRepository, never()).findByNameContainsAndDeletedDateNull(anyString());
+    verify(companyRepository, never()).searchByName(anyString());
 
     assertNotNull(listResponseEntity.getBody());
     assertEquals(3, listResponseEntity.getBody().size());
@@ -131,12 +131,12 @@ class CompanyServiceImplTest extends SpringTestBase {
 
     doReturn(companies)
         .when(companyRepository)
-        .findByNameContainsAndDeletedDateNull(any());
+        .searchByName(any());
 
     final var responseEntity = companiesApi.companiesList(Optional.empty(), Optional.of("test"));
 
     verify(companyRepository, never()).findByDeletedDateNull();
-    verify(companyRepository, times(1)).findByNameContainsAndDeletedDateNull(anyString());
+    verify(companyRepository, times(1)).searchByName(anyString());
 
     assertNotNull(responseEntity.getBody());
     assertEquals(companyCount, responseEntity.getBody().size());
