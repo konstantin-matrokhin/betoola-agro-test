@@ -7,6 +7,7 @@ import ru.kmatrokhin.betoolatest.company.dao.CompanyRepository;
 import ru.kmatrokhin.betoolatest.cultivation.dao.CultivationRepository;
 import ru.kmatrokhin.betoolatest.cultivation.model.CultivationConverter;
 import ru.kmatrokhin.betoolatest.exception.EntityNotFoundException;
+import ru.kmatrokhin.betoolatest.exception.ErrorCode;
 import ru.kmatrokhin.betoolatest.openapi.api.CultivationsApiDelegate;
 import ru.kmatrokhin.betoolatest.openapi.model.CultivationDTO;
 
@@ -25,6 +26,8 @@ public class CultivationServiceImpl implements CultivationsApiDelegate {
   @Override
   public ResponseEntity<List<CultivationDTO>> companiesCultivationsList(String companyId, Optional<String> X_CORRELATION_ID, Optional<String> name) {
     final var companyUUID  = UUID.fromString(companyId);
+    companyRepository.findByIdAndDeletedDateNull(companyUUID)
+        .orElseThrow(() -> new EntityNotFoundException(ErrorCode.COMPANY_NOT_FOUND, "Company not found"));
     final var cultivations = name.isPresent()
         ? cultivationRepository.findByCompany_IdAndNameLike(companyUUID, name.get())
         : cultivationRepository.findByCompany_Id(companyUUID);
@@ -37,7 +40,7 @@ public class CultivationServiceImpl implements CultivationsApiDelegate {
   @Override
   public ResponseEntity<CultivationDTO> companiesOrganizationUnitsFieldsCultivationsCreate(String companyId, CultivationDTO cultivationDTO, Optional<String> X_CORRELATION_ID) {
     final var company = companyRepository.findByIdAndDeletedDateNull(UUID.fromString(companyId))
-        .orElseThrow(EntityNotFoundException::new);
+        .orElseThrow(() -> new EntityNotFoundException(ErrorCode.COMPANY_NOT_FOUND, "Company not found"));
 
     final var cultivation = cultivationConverter.createCultivationFromDTO(cultivationDTO, company);
     cultivationRepository.save(cultivation);

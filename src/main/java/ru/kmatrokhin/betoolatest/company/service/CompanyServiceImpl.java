@@ -7,6 +7,7 @@ import ru.kmatrokhin.betoolatest.company.dao.Company;
 import ru.kmatrokhin.betoolatest.company.dao.CompanyRepository;
 import ru.kmatrokhin.betoolatest.company.model.CompanyConverter;
 import ru.kmatrokhin.betoolatest.exception.EntityNotFoundException;
+import ru.kmatrokhin.betoolatest.exception.ErrorCode;
 import ru.kmatrokhin.betoolatest.openapi.api.CompaniesApiDelegate;
 import ru.kmatrokhin.betoolatest.openapi.model.CompanyDTO;
 
@@ -39,6 +40,7 @@ public class CompanyServiceImpl implements CompaniesApiDelegate {
   public ResponseEntity<CompanyDTO> companiesDestroy(UUID id, Optional<String> X_CORRELATION_ID) {
     final var company = getCompany(id);
     company.setDeletedDate(LocalDateTime.now());
+    companyRepository.save(company);
     return ResponseEntity.ok(companyConverter.createDTOFromCompany(company));
   }
 
@@ -66,6 +68,6 @@ public class CompanyServiceImpl implements CompaniesApiDelegate {
 
   private Company getCompany(UUID id) {
     return companyRepository.findByIdAndDeletedDateNull(id)
-        .orElseThrow(EntityNotFoundException::new);
+        .orElseThrow(() -> new EntityNotFoundException(ErrorCode.COMPANY_NOT_FOUND, "Company not found"));
   }
 }

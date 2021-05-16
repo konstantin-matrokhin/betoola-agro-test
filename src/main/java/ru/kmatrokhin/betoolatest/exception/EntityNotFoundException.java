@@ -1,14 +1,14 @@
 package ru.kmatrokhin.betoolatest.exception;
 
+import lombok.Getter;
+
+@Getter
 public class EntityNotFoundException extends RuntimeException {
-  public EntityNotFoundException() {
-  }
+  private final ErrorCode code;
 
-  public EntityNotFoundException(String message) {
+  public EntityNotFoundException(ErrorCode code, String message) {
     super(message);
+    this.code = code;
   }
 
-  public EntityNotFoundException(String message, Throwable cause) {
-    super(message, cause);
-  }
 }
