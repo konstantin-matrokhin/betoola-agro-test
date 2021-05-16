@@ -10,6 +10,8 @@ import ru.kmatrokhin.betoolatest.cultivation.dao.Cultivation;
 import ru.kmatrokhin.betoolatest.cultivation.dao.CultivationPolygon;
 import ru.kmatrokhin.betoolatest.openapi.model.CompanyDTO;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @SpringBootTest
@@ -34,7 +36,19 @@ public abstract class SpringTestBase {
         .setName("test cultivation")
         .setAccountingYear(1900)
         .setCultivatedVariety("test variety")
+        .setCreatedDate(LocalDateTime.now())
+        .setModifiedDate(LocalDateTime.now())
         .setPolygon(cultivationPolygon);
+  }
+
+  public CultivationPolygon testCultivationPolygon() {
+    return new CultivationPolygon()
+        .setType("test type")
+        .setCoordinates(List.of(
+            new Double[] {0D, 0D},
+            new Double[] {1D, 3000D},
+            new Double[] {52412.123D, 545.32D}
+        ));
   }
 
   public CompanyDTO testCompanyDTO() {
@@ -46,27 +60,6 @@ public abstract class SpringTestBase {
     companyDTO.setPostalCode("1111");
     companyDTO.setName("test name");
     return companyDTO;
-  }
-
-  public String testCompanyJSON() {
-    return "{"
-        + "\"name\": \"Betoola S.r.l.\","
-        + "\"address\": \"Viale Sabotino 8/B\","
-        + "\"postal_code\": \"46100\","
-        + "\"city\": \"Mantova\","
-        + "\"country\": \"IT\","
-        + "\"fiscal_id\": \"02595650207\""
-        + "}";
-  }
-
-  public String testCompanyJSONNoCountry() {
-    return "{"
-        + "\"name\": \"Betoola S.r.l.\","
-        + "\"address\": \"Viale Sabotino 8/B\","
-        + "\"postal_code\": \"46100\","
-        + "\"city\": \"Mantova\","
-        + "\"fiscal_id\": \"02595650207\""
-        + "}";
   }
 
 }
