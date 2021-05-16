@@ -10,6 +10,8 @@ import ru.kmatrokhin.betoolatest.cultivation.dao.Cultivation;
 import ru.kmatrokhin.betoolatest.cultivation.dao.CultivationPolygon;
 import ru.kmatrokhin.betoolatest.openapi.model.CompanyDTO;
 
+import java.util.UUID;
+
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -22,7 +24,8 @@ public abstract class SpringTestBase {
         .setCity("test city")
         .setPostalCode("00000")
         .setFiscalId("1111")
-        .setName("test name");
+        .setName("test name")
+        .setId(UUID.randomUUID());
   }
 
   public Cultivation testCultivation(Company company, CultivationPolygon cultivationPolygon) {
@@ -41,6 +44,7 @@ public abstract class SpringTestBase {
     companyDTO.setCountry("ru");
     companyDTO.setFiscalId("00000");
     companyDTO.setPostalCode("1111");
+    companyDTO.setName("test name");
     return companyDTO;
   }
 

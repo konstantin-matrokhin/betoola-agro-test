@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.kmatrokhin.betoolatest.SpringTestBase;
 import ru.kmatrokhin.betoolatest.company.dao.CompanyRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
+@Transactional
 class CultivationRepositoryTest extends SpringTestBase {
   private final CompanyRepository companyRepository;
   private final CultivationRepository cultivationRepository;

@@ -43,7 +43,7 @@ public class CultivationServiceImpl implements CultivationsApiDelegate {
         .orElseThrow(() -> new EntityNotFoundException(ErrorCode.COMPANY_NOT_FOUND, "Company not found"));
 
     final var cultivation = cultivationConverter.createCultivationFromDTO(cultivationDTO, company);
-    cultivationRepository.save(cultivation);
-    return ResponseEntity.ok(cultivationConverter.createDTOFromCultivation(cultivation));
+    final var saved = cultivationRepository.save(cultivation);
+    return ResponseEntity.ok(cultivationConverter.createDTOFromCultivation(saved));
   }
 }

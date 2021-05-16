@@ -35,7 +35,6 @@ class CompanyRepositoryTest extends SpringTestBase {
   @Test
   void findByDeletedDateNullTest() {
     final var companies = IntStream.range(0, 50).mapToObj(i -> {
-      System.out.println("company #" + i);
       final var company = testCompany();
       if (i % 10 == 0) {
         company.setDeletedDate(LocalDateTime.now());

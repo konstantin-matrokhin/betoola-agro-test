@@ -26,8 +26,8 @@ public class CompanyServiceImpl implements CompaniesApiDelegate {
   @Override
   public ResponseEntity<CompanyDTO> companiesCreate(CompanyDTO companyDTO, Optional<String> X_CORRELATION_ID) {
     final var company = companyConverter.createCompanyFromDTO(companyDTO);
-    companyRepository.save(company);
-    return ResponseEntity.ok(companyConverter.createDTOFromCompany(company));
+    final var saved = companyRepository.save(company);
+    return ResponseEntity.ok(companyConverter.createDTOFromCompany(saved));
   }
 
   @Override
@@ -40,8 +40,8 @@ public class CompanyServiceImpl implements CompaniesApiDelegate {
   public ResponseEntity<CompanyDTO> companiesDestroy(UUID id, Optional<String> X_CORRELATION_ID) {
     final var company = getCompany(id);
     company.setDeletedDate(LocalDateTime.now());
-    companyRepository.save(company);
-    return ResponseEntity.ok(companyConverter.createDTOFromCompany(company));
+    final var saved = companyRepository.save(company);
+    return ResponseEntity.ok(companyConverter.createDTOFromCompany(saved));
   }
 
   @Override
@@ -61,8 +61,8 @@ public class CompanyServiceImpl implements CompaniesApiDelegate {
   public ResponseEntity<CompanyDTO> companiesUpdate(UUID id, CompanyDTO companyDTO, Optional<String> X_CORRELATION_ID) {
     final var company = getCompany(id);
     companyConverter.updateCompanyFieldsFromDTO(company, companyDTO);
-    companyRepository.save(company);
-    return ResponseEntity.ok(companyConverter.createDTOFromCompany(company));
+    final var saved = companyRepository.save(company);
+    return ResponseEntity.ok(companyConverter.createDTOFromCompany(saved));
   }
 
   private Company getCompany(UUID id) {

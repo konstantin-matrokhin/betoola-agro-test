@@ -1,11 +1,13 @@
 package ru.kmatrokhin.betoolatest.company.service;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import ru.kmatrokhin.betoolatest.SpringTestBase;
 import ru.kmatrokhin.betoolatest.company.dao.Company;
 import ru.kmatrokhin.betoolatest.company.dao.CompanyRepository;
+import ru.kmatrokhin.betoolatest.company.model.CompanyConverter;
 import ru.kmatrokhin.betoolatest.openapi.model.CompanyDTO;
 
 import java.time.LocalDateTime;
@@ -27,37 +29,44 @@ class CompanyServiceImplTest extends SpringTestBase {
   @MockBean
   private CompanyRepository companyRepository;
 
+  @Autowired
+  private CompanyConverter companyConverter;
+
   @Test
   void companiesCreateTest() {
-    doReturn(testCompany())
+    final var uuid = UUID.randomUUID();
+    final var testDTO = testCompanyDTO();
+    final var company = companyConverter.createCompanyFromDTO(testDTO);
+    company.setId(uuid);
+    doReturn(company)
         .when(companyRepository)
         .save(any(Company.class));
-    final var testDTO = testCompanyDTO();
 
     final var responseEntity = companiesApi
         .companiesCreate(testDTO, Optional.empty());
     final var body = responseEntity.getBody();
     assertNotNull(body);
+    assertNotNull(body.getId());
 
     verify(companyRepository, times(1))
         .save(
-            argThat((company -> {
-              assertEquals(company.getId(), body.getId());
-              assertEquals(body.getPostalCode(), testDTO.getPostalCode());
-              assertEquals(body.getCountry(), testDTO.getCountry());
-              assertEquals(body.getFiscalId(), testDTO.getFiscalId());
-              assertEquals(body.getAddress(), testDTO.getAddress());
-              assertEquals(body.getName(), testDTO.getName());
-              assertEquals(body.getCity(), testDTO.getCity());
+            argThat((cmp -> {
+              assertEquals(body.getPostalCode(), cmp.getPostalCode());
+              assertEquals(body.getCountry(), cmp.getCountry());
+              assertEquals(body.getFiscalId(), cmp.getFiscalId());
+              assertEquals(body.getAddress().orElse(null), cmp.getAddress());
+              assertEquals(body.getName(), cmp.getName());
+              assertEquals(body.getCity().orElse(null), cmp.getCity());
               return true;
             }))
         );
+
+    assertEquals(uuid, body.getId());
   }
 
   @Test
   void companiesRetrieve() {
     final var company = testCompany();
-    company.setId(UUID.randomUUID());
 
     doReturn(Optional.of(company))
         .when(companyRepository)
@@ -92,9 +101,9 @@ class CompanyServiceImplTest extends SpringTestBase {
   @Test
   void companiesList() {
     final var companies = List.of(
-        testCompany().setId(UUID.randomUUID()),
-        testCompany().setId(UUID.randomUUID()),
-        testCompany().setId(UUID.randomUUID())
+        testCompany(),
+        testCompany(),
+        testCompany()
     );
 
     doReturn(companies)
@@ -117,7 +126,7 @@ class CompanyServiceImplTest extends SpringTestBase {
   void companiesListByName() {
     final var companyCount = 50;
     final var companies = IntStream.range(0, companyCount)
-        .mapToObj((obj) -> testCompany().setId(UUID.randomUUID()))
+        .mapToObj((obj) -> testCompany())
         .collect(Collectors.toList());
 
     doReturn(companies)
@@ -135,5 +144,28 @@ class CompanyServiceImplTest extends SpringTestBase {
 
   @Test
   void companiesUpdate() {
+    final var uuid = UUID.randomUUID();
+    final var company = testCompany().setId(uuid);
+
+    doReturn(null)
+        .when(companyRepository)
+        .save(any(Company.class));
+
+    final var response = companiesApi.companiesCreate(testCompanyDTO(), Optional.empty());
+    final var body = response.getBody();
+    assertNotNull(body);
+    assertNotNull(body.getId());
+    body.setId(null);
+    body.setFiscalId("000123");
+    body.setName("new name");
+    companiesApi.companiesUpdate(company.getId(), body, Optional.empty());
+
+    verify(companyRepository, times(2)).save(any());
+    verify(companyRepository, times(1)).save(argThat(updatedCompany -> {
+      assertEquals(uuid, updatedCompany.getId());
+      assertEquals("000123", updatedCompany.getFiscalId());
+      assertEquals("new name", updatedCompany.getName());
+      return true;
+    }));
   }
 }
