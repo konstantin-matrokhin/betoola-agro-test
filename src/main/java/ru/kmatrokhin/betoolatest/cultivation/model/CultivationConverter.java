@@ -23,8 +23,8 @@ public class CultivationConverter {
         .setCultivatedVariety(cultivationDTO.getCultivatedVariety())
         .setCompany(company)
         .setPolygon(createPolygonFromDTO(cultivationDTO.getPolygon()))
-        .setModifiedDate(cultivationDTO.getModified().atZone(ZoneId.of("UTC")).toLocalDateTime()) //todo fix
-        .setCreatedDate(cultivationDTO.getCreated().atZone(ZoneId.of("UTC")).toLocalDateTime()); //todo fix
+        .setModifiedDate(cultivationDTO.getModified().atZone(ZoneId.of("UTC")).toLocalDateTime())
+        .setCreatedDate(cultivationDTO.getCreated().atZone(ZoneId.of("UTC")).toLocalDateTime());
   }
 
   public CultivationDTO createDTOFromCultivation(Cultivation cultivation) {
@@ -33,8 +33,8 @@ public class CultivationConverter {
     cultivationDTO.setAccountingYear(cultivation.getAccountingYear());
     cultivationDTO.setCultivatedVariety(cultivation.getCultivatedVariety());
     cultivationDTO.setPolygon(createDTOFromPolygon(cultivation.getPolygon()));
-    cultivationDTO.setModified(cultivation.getModifiedDate().toInstant(ZoneOffset.UTC)); //todo fix
-    cultivationDTO.setCreated(cultivation.getCreatedDate().toInstant(ZoneOffset.UTC)); //todo fix
+    cultivationDTO.setModified(cultivation.getModifiedDate().toInstant(ZoneOffset.UTC));
+    cultivationDTO.setCreated(cultivation.getCreatedDate().toInstant(ZoneOffset.UTC));
     cultivationDTO.setId(cultivation.getId());
     return cultivationDTO;
   }
