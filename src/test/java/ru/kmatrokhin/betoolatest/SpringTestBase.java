@@ -15,7 +15,7 @@ public abstract class SpringTestBase {
 
   public Company testCompany() {
     return new Company()
-        .setCountry("RUS")
+        .setCountry("RU")
         .setAddress("test")
         .setCity("test city")
         .setPostalCode("00000")
