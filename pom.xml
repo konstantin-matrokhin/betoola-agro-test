@@ -109,6 +109,11 @@
             <artifactId>jackson-module-parameter-names</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jdk8</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/org.openapitools/jackson-databind-nullable -->
         <dependency>
             <groupId>org.openapitools</groupId>
@@ -126,6 +131,11 @@
             <groupId>com.vladmihalcea</groupId>
             <artifactId>hibernate-types-52</artifactId>
             <version>2.11.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>2.12.3</version>
         </dependency>
     </dependencies>
 
@@ -179,7 +189,7 @@
                                 <useOptional>true</useOptional>
                                 <useTags>true</useTags>
                                 <sourceFolder>src/gen/java/main</sourceFolder>
-                                <dateLibrary>java8-localdatetime</dateLibrary>
+                                <dateLibrary>java8</dateLibrary>
                                 <delegatePattern>true</delegatePattern>
                             </configOptions>
                         </configuration>
