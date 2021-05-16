@@ -1,17 +1,19 @@
 package ru.kmatrokhin.betoolatest.company.service;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import ru.kmatrokhin.betoolatest.SpringTestBase;
 import ru.kmatrokhin.betoolatest.company.dao.Company;
 import ru.kmatrokhin.betoolatest.company.dao.CompanyRepository;
-import ru.kmatrokhin.betoolatest.company.model.CompanyConverter;
+import ru.kmatrokhin.betoolatest.openapi.model.CompanyDTO;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,9 +26,6 @@ class CompanyServiceImplTest extends SpringTestBase {
 
   @MockBean
   private CompanyRepository companyRepository;
-
-  @Autowired
-  private CompanyConverter companyConverter;
 
   @Test
   void companiesCreateTest() {
@@ -92,6 +91,46 @@ class CompanyServiceImplTest extends SpringTestBase {
 
   @Test
   void companiesList() {
+    final var companies = List.of(
+        testCompany().setId(UUID.randomUUID()),
+        testCompany().setId(UUID.randomUUID()),
+        testCompany().setId(UUID.randomUUID())
+    );
+
+    doReturn(companies)
+        .when(companyRepository)
+        .findByDeletedDateNull();
+
+    final var listResponseEntity = companiesApi.companiesList(Optional.empty(), Optional.empty());
+    verify(companyRepository, times(1)).findByDeletedDateNull();
+    verify(companyRepository, never()).findByNameContainsAndDeletedDateNull(anyString());
+
+    assertNotNull(listResponseEntity.getBody());
+    assertEquals(3, listResponseEntity.getBody().size());
+    assertEquals(
+        companies.stream().map(Company::getId).collect(Collectors.toSet()),
+        listResponseEntity.getBody().stream().map(CompanyDTO::getId).collect(Collectors.toSet())
+    );
+  }
+
+  @Test
+  void companiesListByName() {
+    final var companyCount = 50;
+    final var companies = IntStream.range(0, companyCount)
+        .mapToObj((obj) -> testCompany().setId(UUID.randomUUID()))
+        .collect(Collectors.toList());
+
+    doReturn(companies)
+        .when(companyRepository)
+        .findByNameContainsAndDeletedDateNull(any());
+
+    final var responseEntity = companiesApi.companiesList(Optional.empty(), Optional.of("test"));
+
+    verify(companyRepository, never()).findByDeletedDateNull();
+    verify(companyRepository, times(1)).findByNameContainsAndDeletedDateNull(anyString());
+
+    assertNotNull(responseEntity.getBody());
+    assertEquals(companyCount, responseEntity.getBody().size());
   }
 
   @Test
