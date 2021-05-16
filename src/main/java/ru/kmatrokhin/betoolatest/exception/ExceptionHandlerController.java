@@ -2,7 +2,6 @@ package ru.kmatrokhin.betoolatest.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.kmatrokhin.betoolatest.openapi.model.ApiErrorDTO;
@@ -24,7 +23,7 @@ public class ExceptionHandlerController {
     return new ResponseEntity<>(errorDTO, HttpStatus.NOT_FOUND);
   }
 
-  @ExceptionHandler(value = {Exception.class})
+  @ExceptionHandler(value = {Exception.class, RuntimeException.class})
   public ResponseEntity<ApiErrorDTO> handleEntityNotFoundException(
       Exception exception
   ) {
