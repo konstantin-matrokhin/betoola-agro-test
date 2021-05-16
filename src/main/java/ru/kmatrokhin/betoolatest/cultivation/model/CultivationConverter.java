@@ -8,6 +8,8 @@ import ru.kmatrokhin.betoolatest.openapi.model.CultivationDTO;
 import ru.kmatrokhin.betoolatest.openapi.model.GeometryFieldDTO;
 
 import javax.validation.ValidationException;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +22,9 @@ public class CultivationConverter {
         .setAccountingYear(cultivationDTO.getAccountingYear())
         .setCultivatedVariety(cultivationDTO.getCultivatedVariety())
         .setCompany(company)
-        .setPolygon(createPolygonFromDTO(cultivationDTO.getPolygon()));
+        .setPolygon(createPolygonFromDTO(cultivationDTO.getPolygon()))
+        .setModifiedDate(cultivationDTO.getModified().atZone(ZoneId.of("UTC")).toLocalDateTime()) //todo fix
+        .setCreatedDate(cultivationDTO.getCreated().atZone(ZoneId.of("UTC")).toLocalDateTime()); //todo fix
   }
 
   public CultivationDTO createDTOFromCultivation(Cultivation cultivation) {
@@ -29,6 +33,9 @@ public class CultivationConverter {
     cultivationDTO.setAccountingYear(cultivation.getAccountingYear());
     cultivationDTO.setCultivatedVariety(cultivation.getCultivatedVariety());
     cultivationDTO.setPolygon(createDTOFromPolygon(cultivation.getPolygon()));
+    cultivationDTO.setModified(cultivation.getModifiedDate().toInstant(ZoneOffset.UTC)); //todo fix
+    cultivationDTO.setCreated(cultivation.getCreatedDate().toInstant(ZoneOffset.UTC)); //todo fix
+    cultivationDTO.setId(cultivation.getId());
     return cultivationDTO;
   }
 

@@ -184,6 +184,13 @@
                             <generateApiDocumentation>true</generateApiDocumentation>
                             <generateSupportingFiles>true</generateSupportingFiles>
 
+                            <typeMappings>
+                                <typeMapping>OffsetDateTime=Instant</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>java.time.OffsetDateTime=java.time.Instant</importMapping>
+                            </importMappings>
+
                             <configOptions>
                                 <useBeanValidation>true</useBeanValidation>
                                 <useOptional>true</useOptional>

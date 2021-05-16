@@ -1,6 +1,7 @@
 package ru.kmatrokhin.betoolatest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ public class JacksonConfig {
     mapper.findAndRegisterModules();
     mapper.registerModule(new JavaTimeModule());
     mapper.registerModule(new JsonNullableModule());
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     return mapper;
   }
 }
