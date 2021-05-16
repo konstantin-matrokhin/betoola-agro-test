@@ -147,25 +147,33 @@ class CompanyServiceImplTest extends SpringTestBase {
     final var uuid = UUID.randomUUID();
     final var company = testCompany().setId(uuid);
 
-    doReturn(null)
+    doReturn(company)
         .when(companyRepository)
         .save(any(Company.class));
+    doReturn(Optional.of(company))
+        .when(companyRepository)
+        .findByIdAndDeletedDateNull(uuid);
 
-    final var response = companiesApi.companiesCreate(testCompanyDTO(), Optional.empty());
-    final var body = response.getBody();
-    assertNotNull(body);
-    assertNotNull(body.getId());
-    body.setId(null);
-    body.setFiscalId("000123");
-    body.setName("new name");
-    companiesApi.companiesUpdate(company.getId(), body, Optional.empty());
+    final var createdResponse = companiesApi.companiesCreate(testCompanyDTO(), Optional.empty());
+    final var createdBody = createdResponse.getBody();
+    assertNotNull(createdBody);
+    assertNotNull(createdBody.getId());
+
+    createdBody.setId(null);
+    createdBody.setFiscalId("000123");
+    createdBody.setName("new name");
+
+    final var updateResponseEntity = companiesApi
+        .companiesUpdate(company.getId(), createdBody, Optional.empty());
+    assertNotNull(updateResponseEntity.getBody());
+    assertNotNull(updateResponseEntity.getBody().getId());
 
     verify(companyRepository, times(2)).save(any());
-    verify(companyRepository, times(1)).save(argThat(updatedCompany -> {
-      assertEquals(uuid, updatedCompany.getId());
-      assertEquals("000123", updatedCompany.getFiscalId());
-      assertEquals("new name", updatedCompany.getName());
-      return true;
-    }));
+    verify(companyRepository, times(1)).save(
+        argThat(updatedCompany -> "000123".equals(updatedCompany.getFiscalId())
+            && "new name".equals(updatedCompany.getName()))
+    );
+
+    assertEquals(uuid, updateResponseEntity.getBody().getId());
   }
 }

@@ -19,8 +19,7 @@ class CultivationRepositoryTest extends SpringTestBase {
 
   @Test
   void saveCultivationTest() {
-    final var company = testCompany();
-    companyRepository.saveAndFlush(company);
+    final var company = companyRepository.saveAndFlush(testCompany());
     assertNotNull(company.getId());
 
     final var coordinates = List.of(

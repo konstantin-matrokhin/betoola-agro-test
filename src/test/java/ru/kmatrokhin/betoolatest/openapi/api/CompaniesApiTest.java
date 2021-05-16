@@ -5,8 +5,9 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.kmatrokhin.betoolatest.SpringTestBase;
 import ru.kmatrokhin.betoolatest.exception.ErrorCode;
@@ -17,11 +18,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RequiredArgsConstructor(onConstructor_ = {@Autowired})
 @AutoConfigureMockMvc
+@WebAppConfiguration
 class CompaniesApiTest extends SpringTestBase {
   private final MockMvc mockMvc;
 
-  @MockBean
-  private final CompaniesApi companiesApi;
+  @SpyBean
+  private CompaniesApi companiesApi;
 
   @Test
   @SneakyThrows
@@ -47,6 +49,7 @@ class CompaniesApiTest extends SpringTestBase {
         .andExpect(jsonPath("$.code").value(ErrorCode.OTHER_EXCEPTION.toString()))
         .andExpect(jsonPath("$.message").isString())
         .andReturn();
+
   }
 
   @Test
