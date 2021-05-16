@@ -72,36 +72,4 @@ class CompaniesApiTest extends SpringTestBase {
         .andReturn();
 
   }
-
-  @Test
-  @SneakyThrows
-  void companiesDestroy() {
-  }
-
-  @Test
-  @SneakyThrows
-  void companiesList() {
-//    doReturn(ResponseEntity.ok(List.of(
-//        testCompanyDTO().setId(UUID.randomUUID()),
-//        testCompanyDTO().setId(UUID.randomUUID()),
-//        testCompanyDTO().setId(UUID.randomUUID())
-//    ))).when(companiesApi).companiesList(anyString(), anyString()))
-//    ;
-//    mockMvc.perform(get("/companies/")
-//        .content(testCompanyJSONNoCountry())
-//        .contentType(MediaType.APPLICATION_JSON)
-//    )
-//        .andExpect(status().is4xxClientError())
-//        .andExpect(jsonPath("$.code").value(ErrorCode.OTHER_EXCEPTION.toString()))
-//        .andExpect(jsonPath("$.message").isString())
-//        .andReturn();
-  }
-
-  @Test
-  void companiesRetrieve() {
-  }
-
-  @Test
-  void companiesUpdate() {
-  }
 }
