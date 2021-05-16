@@ -46,16 +46,15 @@ public class CompanyServiceImpl implements CompaniesApiDelegate {
 
   @Override
   public ResponseEntity<List<CompanyDTO>> companiesList(Optional<String> X_CORRELATION_ID, Optional<String> name) {
-    if (name.isEmpty()) {
-      return ResponseEntity.ok(List.of());
-    }
+    final var companies = name.isPresent()
+        ? companyRepository.findByNameContainsAndDeletedDateNull(name.get())
+        : companyRepository.findByDeletedDateNull();
 
-    final var companies = companyRepository.findByNameContains(name.get())
-        .stream()
+    final var companyDTOs = companies.stream()
         .map(companyConverter::createDTOFromCompany)
         .collect(Collectors.toList());
 
-    return ResponseEntity.ok(companies);
+    return ResponseEntity.ok(companyDTOs);
   }
 
   @Override

@@ -9,5 +9,7 @@ import java.util.UUID;
 public interface CompanyRepository extends JpaRepository<Company, UUID> {
   Optional<Company> findByIdAndDeletedDateNull(UUID id);
 
-  List<Company> findByNameContains(String name);
+  List<Company> findByNameContainsAndDeletedDateNull(String name);
+
+  List<Company> findByDeletedDateNull();
 }
