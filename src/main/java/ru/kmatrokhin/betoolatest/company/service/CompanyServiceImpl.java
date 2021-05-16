@@ -47,7 +47,7 @@ public class CompanyServiceImpl implements CompaniesApiDelegate {
   @Override
   public ResponseEntity<List<CompanyDTO>> companiesList(Optional<String> X_CORRELATION_ID, Optional<String> name) {
     final var companies = name.isPresent()
-        ? companyRepository.findByNameContainsAndDeletedDateNull(name.get())
+        ? companyRepository.searchByName(name.get())
         : companyRepository.findByDeletedDateNull();
 
     final var companyDTOs = companies.stream()

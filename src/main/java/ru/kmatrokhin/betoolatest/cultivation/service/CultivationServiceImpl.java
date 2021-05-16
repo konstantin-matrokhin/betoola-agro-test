@@ -29,7 +29,7 @@ public class CultivationServiceImpl implements CultivationsApiDelegate {
     companyRepository.findByIdAndDeletedDateNull(companyUUID)
         .orElseThrow(() -> new EntityNotFoundException(ErrorCode.COMPANY_NOT_FOUND, "Company not found"));
     final var cultivations = name.isPresent()
-        ? cultivationRepository.findByCompany_IdAndNameLike(companyUUID, name.get())
+        ? cultivationRepository.searchByCompanyAndName(companyUUID, name.get())
         : cultivationRepository.findByCompany_Id(companyUUID);
 
     final var cultivationDTOs = cultivations.stream()
