@@ -335,7 +335,7 @@ components:
           description: ISO country code
         fiscal_id:
           type: string
-          maxLength: 10
+          maxLength: 11
       required:
         - country
         - postal_code
