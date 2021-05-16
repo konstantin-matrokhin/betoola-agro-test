@@ -338,7 +338,6 @@ components:
           maxLength: 10
       required:
         - country
-        - id
         - postal_code
     CompanyList:
       type: array
@@ -385,7 +384,6 @@ components:
       required:
         - created
         - cultivated_variety
-        - id
         - modified
         - name
     CultivationList:
