@@ -179,7 +179,6 @@
                             <modelPackage>ru.kmatrokhin.betoolatest.openapi.model</modelPackage>
                             <modelNameSuffix>DTO</modelNameSuffix>
                             <addCompileSourceRoot>true</addCompileSourceRoot>
-                            <openApiNullable>false</openApiNullable>
                             <generateModels>true</generateModels>
                             <generateApis>true</generateApis>
                             <generateApiDocumentation>true</generateApiDocumentation>
