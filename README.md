@@ -1,12 +1,12 @@
-#Agro test API
+# Agro test API
 
-###About
+### About
 Test REST API listening on 8080 port.
 
 Swagger URL: `http://localhost:8080/swagger-ui.html`
 Open API file path: `src/main/resources/agro-api.yml`
 
-###Installation
+### Installation
 
 * Clone the repository
     ```shell
