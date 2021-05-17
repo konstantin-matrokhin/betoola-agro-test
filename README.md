@@ -28,3 +28,6 @@ Open API file path: `src/main/resources/agro-api.yml`
     ```shell
     java -jar betoola-test-0.0.1-SNAPSHOT.jar
     ```
+
+If you have some problems with project building, use compiled jar in the directory
+`__if_cannot_compile_jar`.
